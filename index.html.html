@@ -1,0 +1,1658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sports Selection Form</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 280px;
+            height: 280px;
+            margin-left: -400px;
+            background-image: url('https://cdn.prod.website-files.com/64b5f8bfc12b3ec8aef889d7/657b15a8ce62dd978dff60df_demon.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.85;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 280px;
+            height: 280px;
+            margin-left: 400px;
+            background-image: url('https://cdn.prod.website-files.com/64b5f8bfc12b3ec8aef889d7/657b15e705a1737153b425b3_happy-little-gobby.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.85;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .logo-header {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .logo-header img {
+            max-width: 100%;
+            height: auto;
+            max-height: 80px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 28px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        input[type="radio"] {
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+            accent-color: #667eea;
+        }
+
+        .radio-item label {
+            margin: 0;
+            font-weight: 400;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f0f4ff;
+            border-left: 4px solid #667eea;
+            border-radius: 5px;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .message.show {
+            display: block;
+            opacity: 1;
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .message h3 {
+            color: #667eea;
+            font-size: 16px;
+            margin: 0;
+        }
+
+        .reset-btn {
+            padding: 6px 12px;
+            background-color: #667eea;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .reset-btn:hover {
+            background-color: #5568d3;
+        }
+
+        .reset-btn:active {
+            background-color: #4552b8;
+        }
+
+        .stat-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .stat-label {
+            flex: 1;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .stat-value {
+            color: #999;
+            font-size: 13px;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .stat-input {
+            width: 100px;
+            padding: 8px;
+            border: 2px solid #e0e0e0;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .stat-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .stat-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .negative .stat-value {
+            color: #dc3545;
+        }
+
+        .radio-group-baseball {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .radio-item-baseball {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        input[type="radio"].baseball-type {
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+            accent-color: #667eea;
+        }
+
+        .radio-item-baseball label {
+            margin: 0;
+            font-weight: 400;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .radio-group-football {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .radio-item-football {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        input[type="radio"].football-type {
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+            accent-color: #667eea;
+        }
+
+        .radio-item-football label {
+            margin: 0;
+            font-weight: 400;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .action-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #667eea;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 20px;
+        }
+
+        .action-btn:hover {
+            background-color: #5568d3;
+        }
+
+        .action-btn:active {
+            background-color: #4552b8;
+        }
+
+        .result-section {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e8f5e9;
+            border-left: 4px solid #28a745;
+            border-radius: 4px;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .result-section.show {
+            display: block;
+            opacity: 1;
+        }
+
+        .result-section h4 {
+            color: #28a745;
+            font-size: 14px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #333;
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #c8e6c9;
+        }
+
+        .breakdown-item:last-child {
+            border-bottom: none;
+            margin-bottom: 12px;
+            padding-bottom: 0;
+        }
+
+        .breakdown-label {
+            font-weight: 500;
+        }
+
+        .breakdown-calc {
+            color: #666;
+            font-size: 12px;
+        }
+
+        .breakdown-value {
+            font-weight: 600;
+            color: #28a745;
+        }
+
+        .breakdown-value.negative {
+            color: #dc3545;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 2px solid #4caf50;
+        }
+
+        .total-label {
+            color: #333;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .total-value {
+            color: #28a745;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .copy-feedback {
+            display: none;
+            color: #28a745;
+            font-size: 12px;
+            margin-top: 10px;
+            text-align: center;
+            font-weight: 600;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .copy-feedback.show {
+            display: block;
+            opacity: 1;
+        }
+
+        .hitter-stats {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            height: auto;
+        }
+
+        .hitter-stats.show {
+            display: block;
+            opacity: 1;
+        }
+
+        .pitcher-stats {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .pitcher-stats.show {
+            display: block;
+            opacity: 1;
+        }
+
+        .mma-stats {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .mma-stats.show {
+            display: block;
+            opacity: 1;
+        }
+
+        .tennis-stats {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .tennis-stats.show {
+            display: block;
+            opacity: 1;
+        }
+
+        .football-offensive-stats {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .football-offensive-stats.show {
+            display: block;
+            opacity: 1;
+        }
+
+        .football-kicker-stats {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .football-kicker-stats.show {
+            display: block;
+            opacity: 1;
+        }
+
+        .stats-container {
+            min-height: 300px;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo-header">
+            <img src="https://cdn.prod.website-files.com/64b5f8bfc12b3ec8aef889d7/68a89edaf3b822b2116ea1f7_prizepicks_full-logo.svg" alt="PrizePicks Logo">
+        </div>
+
+        <h1>⚽ Sports Selection Form</h1>
+        <form id="sportsForm">
+            <!-- Radio Buttons Section -->
+            <div class="form-group">
+                <div class="radio-group">
+                    <div class="radio-item">
+                        <input type="radio" id="radio-basketball" name="favorite-sport" value="basketball">
+                        <label for="radio-basketball">🏀 Basketball</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="radio-baseball" name="favorite-sport" value="baseball">
+                        <label for="radio-baseball">⚾ Baseball</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="radio-tennis" name="favorite-sport" value="tennis">
+                        <label for="radio-tennis">🎾 Tennis</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="radio-mma" name="favorite-sport" value="mma">
+                        <label for="radio-mma">🥊 MMA</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="radio-football" name="favorite-sport" value="football">
+                        <label for="radio-football">🏈 Football</label>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <!-- Basketball Message -->
+        <div class="message" id="basketballMessage">
+            <div class="message-header">
+                <h3>Basketball Fantasy Score</h3>
+                <button type="button" class="reset-btn" id="resetBtn">🔄 Reset</button>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Points = 1.0 Fantasy Score</span>
+                <span class="stat-value">1.0</span>
+                <input type="number" class="stat-input" data-multiplier="1.0" data-name="Points" placeholder="">
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Rebounds = 1.2 Fantasy Score</span>
+                <span class="stat-value">1.2</span>
+                <input type="number" class="stat-input" data-multiplier="1.2" data-name="Rebounds" placeholder="">
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Assists = 1.5 Fantasy Score</span>
+                <span class="stat-value">1.5</span>
+                <input type="number" class="stat-input" data-multiplier="1.5" data-name="Assists" placeholder="">
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Steals = 3.0 Fantasy Score</span>
+                <span class="stat-value">3.0</span>
+                <input type="number" class="stat-input" data-multiplier="3.0" data-name="Steals" placeholder="">
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Blocks = 3.0 Fantasy Score</span>
+                <span class="stat-value">3.0</span>
+                <input type="number" class="stat-input" data-multiplier="3.0" data-name="Blocks" placeholder="">
+            </div>
+            <div class="stat-row negative">
+                <span class="stat-label">Turnovers = -1.0 Fantasy Score</span>
+                <span class="stat-value">-1.0</span>
+                <input type="number" class="stat-input" data-multiplier="-1.0" data-name="Turnovers" placeholder="">
+            </div>
+
+            <button type="button" class="action-btn" id="actionBtn">👁️ Show & Copy Result</button>
+
+            <div class="result-section" id="resultSection">
+                <h4>Basketball Fantasy Score Breakdown:</h4>
+                <div id="breakdownContainer"></div>
+                <div class="total-row">
+                    <span class="total-label">Total Fantasy Score:</span>
+                    <span class="total-value" id="totalScore">0.0</span>
+                </div>
+            </div>
+
+            <div class="copy-feedback" id="copyFeedback">✓ Copied to clipboard!</div>
+        </div>
+
+        <!-- Baseball Message -->
+        <div class="message" id="baseballMessage">
+            <div class="message-header">
+                <h3>Baseball Fantasy Score</h3>
+                <button type="button" class="reset-btn" id="baseballResetBtn">🔄 Reset</button>
+            </div>
+            <div class="radio-group-baseball">
+                <div class="radio-item-baseball">
+                    <input type="radio" id="radio-hitter" name="baseball-type" value="hitter" class="baseball-type">
+                    <label for="radio-hitter">Hitter/Batter</label>
+                </div>
+                <div class="radio-item-baseball">
+                    <input type="radio" id="radio-pitcher" name="baseball-type" value="pitcher" class="baseball-type">
+                    <label for="radio-pitcher">Pitcher</label>
+                </div>
+            </div>
+
+            <div class="stats-container">
+                <!-- Hitter Stats -->
+                <div class="hitter-stats" id="hitterStats">
+                    <div class="stat-row">
+                        <span class="stat-label">Single = 3 Fantasy Score</span>
+                        <span class="stat-value">3</span>
+                        <input type="number" class="stat-input hitter-input" data-multiplier="3" data-name="Single" placeholder="">
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Double = 5 Fantasy Score</span>
+                        <span class="stat-value">5</span>
+                        <input type="number" class="stat-input hitter-input" data-multiplier="5" data-name="Double" placeholder="">
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Triple = 8 Fantasy Score</span>
+                        <span class="stat-value">8</span>
+                        <input type="number" class="stat-input hitter-input" data-multiplier="8" data-name="Triple" placeholder="">
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Home Run = 10 Fantasy Score</span>
+                        <span class="stat-value">10</span>
+                        <input type="number" class="stat-input hitter-input" data-multiplier="10" data-name="Home Run" placeholder="">
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Run = 2 Fantasy Score</span>
+                        <span class="stat-value">2</span>
+                        <input type="number" class="stat-input hitter-input" data-multiplier="2" data-name="Run" placeholder="">
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">RBI = 2 Fantasy Score</span>
+                        <span class="stat-value">2</span>
+                        <input type="number" class="stat-input hitter-input" data-multiplier="2" data-name="RBI" placeholder="">
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Walk (BB) = 2 Fantasy Score</span>
+                        <span class="stat-value">2</span>
+                        <input type="number" class="stat-input hitter-input" data-multiplier="2" data-name="Walk (BB)" placeholder="">
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Hit By Pitch (HBP) = 2 Fantasy Score</span>
+                        <span class="stat-value">2</span>
+                        <input type="number" class="stat-input hitter-input" data-multiplier="2" data-name="Hit By Pitch (HBP)" placeholder="">
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Stolen Base = 5 Fantasy Score</span>
+                        <span class="stat-value">5</span>
+                        <input type="number" class="stat-input hitter-input" data-multiplier="5" data-name="Stolen Base" placeholder="">
+                    </div>
+
+                    <button type="button" class="action-btn" id="hitterActionBtn">👁️ Show & Copy Result</button>
+
+                    <div class="result-section" id="hitterResultSection">
+                        <h4>Baseball (Hitter) Fantasy Score Breakdown:</h4>
+                        <div id="hitterBreakdownContainer"></div>
+                        <div class="total-row">
+                            <span class="total-label">Total Fantasy Score:</span>
+                            <span class="total-value" id="hitterTotalScore">0.0</span>
+                        </div>
+                    </div>
+
+                    <div class="copy-feedback" id="hitterCopyFeedback">✓ Copied to clipboard!</div>
+                </div>
+
+                <!-- Pitcher Stats -->
+                <div class="pitcher-stats" id="pitcherStats">
+                    <div class="stat-row">
+                        <span class="stat-label">Win = 6 Fantasy Score</span>
+                        <span class="stat-value">6</span>
+                        <input type="number" class="stat-input pitcher-input" data-multiplier="6" data-name="Win" placeholder="">
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Quality Start = 4 Fantasy Score</span>
+                        <span class="stat-value">4</span>
+                        <input type="number" class="stat-input pitcher-input" data-multiplier="4" data-name="Quality Start" placeholder="">
+                    </div>
+                    <div class="stat-row negative">
+                        <span class="stat-label">Earned Run = -3 Fantasy Score</span>
+                        <span class="stat-value">-3</span>
+                        <input type="number" class="stat-input pitcher-input" data-multiplier="-3" data-name="Earned Run" placeholder="">
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Strikeout = 3 Fantasy Score</span>
+                        <span class="stat-value">3</span>
+                        <input type="number" class="stat-input pitcher-input" data-multiplier="3" data-name="Strikeout" placeholder="">
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Out = 1 Fantasy Score</span>
+                        <span class="stat-value">1</span>
+                        <input type="number" class="stat-input pitcher-input" data-multiplier="1" data-name="Out" placeholder="">
+                    </div>
+
+                    <button type="button" class="action-btn" id="pitcherActionBtn">👁️ Show & Copy Result</button>
+
+                    <div class="result-section" id="pitcherResultSection">
+                        <h4>Baseball (Pitcher) Fantasy Score Breakdown:</h4>
+                        <div id="pitcherBreakdownContainer"></div>
+                        <div class="total-row">
+                            <span class="total-label">Total Fantasy Score:</span>
+                            <span class="total-value" id="pitcherTotalScore">0.0</span>
+                        </div>
+                    </div>
+
+                    <div class="copy-feedback" id="pitcherCopyFeedback">✓ Copied to clipboard!</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tennis Message -->
+        <div class="message" id="tennisMessage">
+            <div class="message-header">
+                <h3>Tennis Fantasy Score</h3>
+                <button type="button" class="reset-btn" id="tennisResetBtn">🔄 Reset</button>
+            </div>
+
+            <!-- Tennis Stats -->
+            <div class="tennis-stats" id="tennisStats">
+                <div class="stat-row">
+                    <span class="stat-label">Match Played = 10 Fantasy Score</span>
+                    <span class="stat-value">10</span>
+                    <input type="number" class="stat-input tennis-input" data-multiplier="10" data-name="Match Played" placeholder="">
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Game Win = 1 Fantasy Score</span>
+                    <span class="stat-value">1</span>
+                    <input type="number" class="stat-input tennis-input" data-multiplier="1" data-name="Game Win" placeholder="">
+                </div>
+                <div class="stat-row negative">
+                    <span class="stat-label">Game Loss = -1 Fantasy Score</span>
+                    <span class="stat-value">-1</span>
+                    <input type="number" class="stat-input tennis-input" data-multiplier="-1" data-name="Game Loss" placeholder="">
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Set Won = 3 Fantasy Score</span>
+                    <span class="stat-value">3</span>
+                    <input type="number" class="stat-input tennis-input" data-multiplier="3" data-name="Set Won" placeholder="">
+                </div>
+                <div class="stat-row negative">
+                    <span class="stat-label">Set Loss = -3 Fantasy Score</span>
+                    <span class="stat-value">-3</span>
+                    <input type="number" class="stat-input tennis-input" data-multiplier="-3" data-name="Set Loss" placeholder="">
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Ace = 0.5 Fantasy Score</span>
+                    <span class="stat-value">0.5</span>
+                    <input type="number" class="stat-input tennis-input" data-multiplier="0.5" data-name="Ace" placeholder="">
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Double Fault = 0.5 Fantasy Score</span>
+                    <span class="stat-value">0.5</span>
+                    <input type="number" class="stat-input tennis-input" data-multiplier="0.5" data-name="Double Fault" placeholder="">
+                </div>
+
+                <button type="button" class="action-btn" id="tennisActionBtn">👁️ Show & Copy Result</button>
+
+                <div class="result-section" id="tennisResultSection">
+                    <h4>Tennis Fantasy Score Breakdown:</h4>
+                    <div id="tennisBreakdownContainer"></div>
+                    <div class="total-row">
+                        <span class="total-label">Total Fantasy Score:</span>
+                        <span class="total-value" id="tennisTotalScore">0.0</span>
+                    </div>
+                </div>
+
+                <div class="copy-feedback" id="tennisCopyFeedback">✓ Copied to clipboard!</div>
+            </div>
+        </div>
+
+        <!-- MMA Message -->
+        <div class="message" id="mmaMessage">
+            <div class="message-header">
+                <h3>MMA Fantasy Score</h3>
+                <button type="button" class="reset-btn" id="mmaResetBtn">🔄 Reset</button>
+            </div>
+
+            <!-- MMA Stats -->
+            <div class="mma-stats" id="mmaStats">
+                <div class="stat-row">
+                    <span class="stat-label">Significant Strikes = 0.5 Fantasy Score</span>
+                    <span class="stat-value">0.5</span>
+                    <input type="number" class="stat-input mma-input" data-multiplier="0.5" data-name="Significant Strikes" placeholder="">
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Takedowns = 1.5 Fantasy Score</span>
+                    <span class="stat-value">1.5</span>
+                    <input type="number" class="stat-input mma-input" data-multiplier="1.5" data-name="Takedowns" placeholder="">
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Knockdowns = 2 Fantasy Score</span>
+                    <span class="stat-value">2</span>
+                    <input type="number" class="stat-input mma-input" data-multiplier="2" data-name="Knockdowns" placeholder="">
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Control Time (seconds) = 0.1 Fantasy Score</span>
+                    <span class="stat-value">0.1</span>
+                    <input type="number" class="stat-input mma-input" data-multiplier="0.1" data-name="Control Time" placeholder="">
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Win Bonus = 10 Fantasy Score</span>
+                    <span class="stat-value">10</span>
+                    <input type="number" class="stat-input mma-input" data-multiplier="10" data-name="Win Bonus" placeholder="">
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Performance Bonus = 5 Fantasy Score</span>
+                    <span class="stat-value">5</span>
+                    <input type="number" class="stat-input mma-input" data-multiplier="5" data-name="Performance Bonus" placeholder="">
+                </div>
+                <div class="stat-row negative">
+                    <span class="stat-label">Penalties (fouls/missed weight) = -2 Fantasy Score</span>
+                    <span class="stat-value">-2</span>
+                    <input type="number" class="stat-input mma-input" data-multiplier="-2" data-name="Penalties" placeholder="">
+                </div>
+
+                <button type="button" class="action-btn" id="mmaActionBtn">👁️ Show & Copy Result</button>
+
+                <div class="result-section" id="mmaResultSection">
+                    <h4>MMA Fantasy Score Breakdown:</h4>
+                    <div id="mmaBreakdownContainer"></div>
+                    <div class="total-row">
+                        <span class="total-label">Total Fantasy Score:</span>
+                        <span class="total-value" id="mmaTotalScore">0.0</span>
+                    </div>
+                </div>
+
+                <div class="copy-feedback" id="mmaCopyFeedback">✓ Copied to clipboard!</div>
+            </div>
+        </div>
+
+        <!-- Football Message -->
+        <div class="message" id="footballMessage">
+            <div class="message-header">
+                <h3>Football Fantasy Score</h3>
+                <button type="button" class="reset-btn" id="footballResetBtn">🔄 Reset</button>
+            </div>
+            <div class="radio-group-football">
+                <div class="radio-item-football">
+                    <input type="radio" id="radio-offensive" name="football-type" value="offensive" class="football-type">
+                    <label for="radio-offensive">Offensive Player</label>
+                </div>
+                <div class="radio-item-football">
+                    <input type="radio" id="radio-kicker" name="football-type" value="kicker" class="football-type">
+                    <label for="radio-kicker">Kicker</label>
+                </div>
+            </div>
+
+            <div class="stats-container">
+                <!-- Offensive Stats -->
+                <div class="football-offensive-stats" id="footballOffensiveStats">
+                    <div class="stat-row">
+                        <span class="stat-label">Passing Yards = 0.04 per yard</span>
+                        <span class="stat-value">0.04</span>
+                        <input type="number" class="stat-input football-offensive-input" data-multiplier="0.04" data-name="Passing Yards" placeholder="">
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Passing TDs = 4</span>
+                        <span class="stat-value">4</span>
+                        <input type="number" class="stat-input football-offensive-input" data-multiplier="4" data-name="Passing TDs" placeholder="">
+                    </div>
+                    <div class="stat-row negative">
+                        <span class="stat-label">Interceptions = -1</span>
+                        <span class="stat-value">-1</span>
+                        <input type="number" class="stat-input football-offensive-input" data-multiplier="-1" data-name="Interceptions" placeholder="">
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Rushing Yards = 0.1 per yard</span>
+                        <span class="stat-value">0.1</span>
+                        <input type="number" class="stat-input football-offensive-input" data-multiplier="0.1" data-name="Rushing Yards" placeholder="">
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Rushing TDs = 6</span>
+                        <span class="stat-value">6</span>
+                        <input type="number" class="stat-input football-offensive-input" data-multiplier="6" data-name="Rushing TDs" placeholder="">
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Receptions = 1</span>
+                        <span class="stat-value">1</span>
+                        <input type="number" class="stat-input football-offensive-input" data-multiplier="1" data-name="Receptions" placeholder="">
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Receiving Yards = 0.1 per yard</span>
+                        <span class="stat-value">0.1</span>
+                        <input type="number" class="stat-input football-offensive-input" data-multiplier="0.1" data-name="Receiving Yards" placeholder="">
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Receiving TDs = 6</span>
+                        <span class="stat-value">6</span>
+                        <input type="number" class="stat-input football-offensive-input" data-multiplier="6" data-name="Receiving TDs" placeholder="">
+                    </div>
+                    <div class="stat-row negative">
+                        <span class="stat-label">Fumbles Lost = -1</span>
+                        <span class="stat-value">-1</span>
+                        <input type="number" class="stat-input football-offensive-input" data-multiplier="-1" data-name="Fumbles Lost" placeholder="">
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">2-Point Conversions = 2</span>
+                        <span class="stat-value">2</span>
+                        <input type="number" class="stat-input football-offensive-input" data-multiplier="2" data-name="2-Point Conversions" placeholder="">
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Offensive Fumble Recovery TDs = 6</span>
+                        <span class="stat-value">6</span>
+                        <input type="number" class="stat-input football-offensive-input" data-multiplier="6" data-name="Offensive Fumble Recovery TDs" placeholder="">
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Kick/Punt/Field Goal Return TDs = 6</span>
+                        <span class="stat-value">6</span>
+                        <input type="number" class="stat-input football-offensive-input" data-multiplier="6" data-name="Kick/Punt/Field Goal Return TDs" placeholder="">
+                    </div>
+
+                    <button type="button" class="action-btn" id="footballOffensiveActionBtn">👁️ Show & Copy Result</button>
+
+                    <div class="result-section" id="footballOffensiveResultSection">
+                        <h4>Football (Offensive Player) Fantasy Score Breakdown:</h4>
+                        <div id="footballOffensiveBreakdownContainer"></div>
+                        <div class="total-row">
+                            <span class="total-label">Total Fantasy Score:</span>
+                            <span class="total-value" id="footballOffensiveTotalScore">0.0</span>
+                        </div>
+                    </div>
+
+                    <div class="copy-feedback" id="footballOffensiveCopyFeedback">✓ Copied to clipboard!</div>
+                </div>
+
+                <!-- Kicker Stats -->
+                <div class="football-kicker-stats" id="footballKickerStats">
+                    <div class="stat-row">
+                        <span class="stat-label">Field Goals (0–39 yards) = 3</span>
+                        <span class="stat-value">3</span>
+                        <input type="number" class="stat-input football-kicker-input" data-multiplier="3" data-name="Field Goals (0–39 yards)" placeholder="">
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Field Goals (40–49 yards) = 4</span>
+                        <span class="stat-value">4</span>
+                        <input type="number" class="stat-input football-kicker-input" data-multiplier="4" data-name="Field Goals (40–49 yards)" placeholder="">
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Field Goals (50+ yards) = 5</span>
+                        <span class="stat-value">5</span>
+                        <input type="number" class="stat-input football-kicker-input" data-multiplier="5" data-name="Field Goals (50+ yards)" placeholder="">
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">PAT Made = 1</span>
+                        <span class="stat-value">1</span>
+                        <input type="number" class="stat-input football-kicker-input" data-multiplier="1" data-name="PAT Made" placeholder="">
+                    </div>
+                    <div class="stat-row negative">
+                        <span class="stat-label">Missed FG = -1</span>
+                        <span class="stat-value">-1</span>
+                        <input type="number" class="stat-input football-kicker-input" data-multiplier="-1" data-name="Missed FG" placeholder="">
+                    </div>
+                    <div class="stat-row negative">
+                        <span class="stat-label">Missed PAT = -1</span>
+                        <span class="stat-value">-1</span>
+                        <input type="number" class="stat-input football-kicker-input" data-multiplier="-1" data-name="Missed PAT" placeholder="">
+                    </div>
+
+                    <button type="button" class="action-btn" id="footballKickerActionBtn">👁️ Show & Copy Result</button>
+
+                    <div class="result-section" id="footballKickerResultSection">
+                        <h4>Football (Kicker) Fantasy Score Breakdown:</h4>
+                        <div id="footballKickerBreakdownContainer"></div>
+                        <div class="total-row">
+                            <span class="total-label">Total Fantasy Score:</span>
+                            <span class="total-value" id="footballKickerTotalScore">0.0</span>
+                        </div>
+                    </div>
+
+                    <div class="copy-feedback" id="footballKickerCopyFeedback">✓ Copied to clipboard!</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const radioButtons = document.querySelectorAll('input[name="favorite-sport"]');
+        const basketballMessage = document.getElementById('basketballMessage');
+        const baseballMessage = document.getElementById('baseballMessage');
+        const tennisMessage = document.getElementById('tennisMessage');
+        const mmaMessage = document.getElementById('mmaMessage');
+        const footballMessage = document.getElementById('footballMessage');
+        const statInputs = document.querySelectorAll('.stat-input:not(.hitter-input):not(.pitcher-input):not(.mma-input):not(.tennis-input):not(.football-offensive-input):not(.football-kicker-input)');
+        const hitterInputs = document.querySelectorAll('.hitter-input');
+        const pitcherInputs = document.querySelectorAll('.pitcher-input');
+        const mmaInputs = document.querySelectorAll('.mma-input');
+        const tennisInputs = document.querySelectorAll('.tennis-input');
+        const footballOffensiveInputs = document.querySelectorAll('.football-offensive-input');
+        const footballKickerInputs = document.querySelectorAll('.football-kicker-input');
+        const resultSection = document.getElementById('resultSection');
+        const totalScoreDisplay = document.getElementById('totalScore');
+        const breakdownContainer = document.getElementById('breakdownContainer');
+        const copyFeedback = document.getElementById('copyFeedback');
+        const resetBtn = document.getElementById('resetBtn');
+        const baseballResetBtn = document.getElementById('baseballResetBtn');
+        const mmaResetBtn = document.getElementById('mmaResetBtn');
+        const tennisResetBtn = document.getElementById('tennisResetBtn');
+        const footballResetBtn = document.getElementById('footballResetBtn');
+        const actionBtn = document.getElementById('actionBtn');
+        const hitterRadio = document.getElementById('radio-hitter');
+        const pitcherRadio = document.getElementById('radio-pitcher');
+        const offensiveRadio = document.getElementById('radio-offensive');
+        const kickerRadio = document.getElementById('radio-kicker');
+        const hitterStats = document.getElementById('hitterStats');
+        const pitcherStats = document.getElementById('pitcherStats');
+        const mmaStats = document.getElementById('mmaStats');
+        const tennisStats = document.getElementById('tennisStats');
+        const footballOffensiveStats = document.getElementById('footballOffensiveStats');
+        const footballKickerStats = document.getElementById('footballKickerStats');
+        const hitterActionBtn = document.getElementById('hitterActionBtn');
+        const pitcherActionBtn = document.getElementById('pitcherActionBtn');
+        const mmaActionBtn = document.getElementById('mmaActionBtn');
+        const tennisActionBtn = document.getElementById('tennisActionBtn');
+        const footballOffensiveActionBtn = document.getElementById('footballOffensiveActionBtn');
+        const footballKickerActionBtn = document.getElementById('footballKickerActionBtn');
+        const hitterResultSection = document.getElementById('hitterResultSection');
+        const pitcherResultSection = document.getElementById('pitcherResultSection');
+        const mmaResultSection = document.getElementById('mmaResultSection');
+        const tennisResultSection = document.getElementById('tennisResultSection');
+        const footballOffensiveResultSection = document.getElementById('footballOffensiveResultSection');
+        const footballKickerResultSection = document.getElementById('footballKickerResultSection');
+        const hitterBreakdownContainer = document.getElementById('hitterBreakdownContainer');
+        const pitcherBreakdownContainer = document.getElementById('pitcherBreakdownContainer');
+        const mmaBreakdownContainer = document.getElementById('mmaBreakdownContainer');
+        const tennisBreakdownContainer = document.getElementById('tennisBreakdownContainer');
+        const footballOffensiveBreakdownContainer = document.getElementById('footballOffensiveBreakdownContainer');
+        const footballKickerBreakdownContainer = document.getElementById('footballKickerBreakdownContainer');
+        const hitterTotalScore = document.getElementById('hitterTotalScore');
+        const pitcherTotalScore = document.getElementById('pitcherTotalScore');
+        const mmaTotalScore = document.getElementById('mmaTotalScore');
+        const tennisTotalScore = document.getElementById('tennisTotalScore');
+        const footballOffensiveTotalScore = document.getElementById('footballOffensiveTotalScore');
+        const footballKickerTotalScore = document.getElementById('footballKickerTotalScore');
+        const hitterCopyFeedback = document.getElementById('hitterCopyFeedback');
+        const pitcherCopyFeedback = document.getElementById('pitcherCopyFeedback');
+        const mmaCopyFeedback = document.getElementById('mmaCopyFeedback');
+        const tennisCopyFeedback = document.getElementById('tennisCopyFeedback');
+        const footballOffensiveCopyFeedback = document.getElementById('footballOffensiveCopyFeedback');
+        const footballKickerCopyFeedback = document.getElementById('footballKickerCopyFeedback');
+
+        radioButtons.forEach(radio => {
+            radio.addEventListener('change', function() {
+                console.log('Sport Selected:', this.value);
+                
+                // Reset all input fields
+                statInputs.forEach(input => {
+                    input.value = '';
+                });
+                hitterInputs.forEach(input => {
+                    input.value = '';
+                });
+                pitcherInputs.forEach(input => {
+                    input.value = '';
+                });
+                mmaInputs.forEach(input => {
+                    input.value = '';
+                });
+                tennisInputs.forEach(input => {
+                    input.value = '';
+                });
+                footballOffensiveInputs.forEach(input => {
+                    input.value = '';
+                });
+                footballKickerInputs.forEach(input => {
+                    input.value = '';
+                });
+
+                // Reset radio buttons
+                hitterRadio.checked = false;
+                pitcherRadio.checked = false;
+                offensiveRadio.checked = false;
+                kickerRadio.checked = false;
+
+                // Reset calculation display
+                breakdownContainer.innerHTML = '';
+                totalScoreDisplay.textContent = '0.0';
+                resultSection.classList.remove('show');
+                copyFeedback.classList.remove('show');
+                hitterStats.classList.remove('show');
+                pitcherStats.classList.remove('show');
+                mmaStats.classList.remove('show');
+                tennisStats.classList.remove('show');
+                footballOffensiveStats.classList.remove('show');
+                footballKickerStats.classList.remove('show');
+                hitterResultSection.classList.remove('show');
+                pitcherResultSection.classList.remove('show');
+                mmaResultSection.classList.remove('show');
+                tennisResultSection.classList.remove('show');
+                footballOffensiveResultSection.classList.remove('show');
+                footballKickerResultSection.classList.remove('show');
+                hitterCopyFeedback.classList.remove('show');
+                pitcherCopyFeedback.classList.remove('show');
+                mmaCopyFeedback.classList.remove('show');
+                tennisCopyFeedback.classList.remove('show');
+                footballOffensiveCopyFeedback.classList.remove('show');
+                footballKickerCopyFeedback.classList.remove('show');
+                
+                if (this.value === 'basketball') {
+                    basketballMessage.classList.add('show');
+                    baseballMessage.classList.remove('show');
+                    tennisMessage.classList.remove('show');
+                    mmaMessage.classList.remove('show');
+                    footballMessage.classList.remove('show');
+                } else if (this.value === 'baseball') {
+                    baseballMessage.classList.add('show');
+                    basketballMessage.classList.remove('show');
+                    tennisMessage.classList.remove('show');
+                    mmaMessage.classList.remove('show');
+                    footballMessage.classList.remove('show');
+                } else if (this.value === 'tennis') {
+                    tennisMessage.classList.add('show');
+                    basketballMessage.classList.remove('show');
+                    baseballMessage.classList.remove('show');
+                    mmaMessage.classList.remove('show');
+                    footballMessage.classList.remove('show');
+                    tennisStats.classList.add('show');
+                } else if (this.value === 'mma') {
+                    mmaMessage.classList.add('show');
+                    basketballMessage.classList.remove('show');
+                    baseballMessage.classList.remove('show');
+                    tennisMessage.classList.remove('show');
+                    footballMessage.classList.remove('show');
+                    mmaStats.classList.add('show');
+                } else if (this.value === 'football') {
+                    footballMessage.classList.add('show');
+                    basketballMessage.classList.remove('show');
+                    baseballMessage.classList.remove('show');
+                    tennisMessage.classList.remove('show');
+                    mmaMessage.classList.remove('show');
+                } else {
+                    basketballMessage.classList.remove('show');
+                    baseballMessage.classList.remove('show');
+                    tennisMessage.classList.remove('show');
+                    mmaMessage.classList.remove('show');
+                    footballMessage.classList.remove('show');
+                }
+            });
+        });
+
+        hitterRadio.addEventListener('change', function() {
+            if (this.checked) {
+                hitterStats.classList.add('show');
+                pitcherStats.classList.remove('show');
+                hitterResultSection.classList.remove('show');
+                hitterCopyFeedback.classList.remove('show');
+                hitterInputs.forEach(input => {
+                    input.value = '';
+                });
+                hitterBreakdownContainer.innerHTML = '';
+                hitterTotalScore.textContent = '0.0';
+            }
+        });
+
+        pitcherRadio.addEventListener('change', function() {
+            if (this.checked) {
+                pitcherStats.classList.add('show');
+                hitterStats.classList.remove('show');
+                pitcherResultSection.classList.remove('show');
+                pitcherCopyFeedback.classList.remove('show');
+                pitcherInputs.forEach(input => {
+                    input.value = '';
+                });
+                pitcherBreakdownContainer.innerHTML = '';
+                pitcherTotalScore.textContent = '0.0';
+            }
+        });
+
+        offensiveRadio.addEventListener('change', function() {
+            if (this.checked) {
+                footballOffensiveStats.classList.add('show');
+                footballKickerStats.classList.remove('show');
+                footballOffensiveResultSection.classList.remove('show');
+                footballOffensiveCopyFeedback.classList.remove('show');
+                footballOffensiveInputs.forEach(input => {
+                    input.value = '';
+                });
+                footballOffensiveBreakdownContainer.innerHTML = '';
+                footballOffensiveTotalScore.textContent = '0.0';
+                console.log('Offensive Player selected');
+            }
+        });
+
+        kickerRadio.addEventListener('change', function() {
+            if (this.checked) {
+                footballKickerStats.classList.add('show');
+                footballOffensiveStats.classList.remove('show');
+                footballKickerResultSection.classList.remove('show');
+                footballKickerCopyFeedback.classList.remove('show');
+                footballKickerInputs.forEach(input => {
+                    input.value = '';
+                });
+                footballKickerBreakdownContainer.innerHTML = '';
+                footballKickerTotalScore.textContent = '0.0';
+                console.log('Kicker selected');
+            }
+        });
+
+        resetBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            statInputs.forEach(input => {
+                input.value = '';
+            });
+            breakdownContainer.innerHTML = '';
+            totalScoreDisplay.textContent = '0.0';
+            resultSection.classList.remove('show');
+            copyFeedback.classList.remove('show');
+            console.log('Basketball calculator reset');
+        });
+
+        baseballResetBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            hitterRadio.checked = false;
+            pitcherRadio.checked = false;
+            hitterStats.classList.remove('show');
+            pitcherStats.classList.remove('show');
+            hitterInputs.forEach(input => {
+                input.value = '';
+            });
+            pitcherInputs.forEach(input => {
+                input.value = '';
+            });
+            hitterBreakdownContainer.innerHTML = '';
+            pitcherBreakdownContainer.innerHTML = '';
+            hitterTotalScore.textContent = '0.0';
+            pitcherTotalScore.textContent = '0.0';
+            hitterResultSection.classList.remove('show');
+            pitcherResultSection.classList.remove('show');
+            hitterCopyFeedback.classList.remove('show');
+            pitcherCopyFeedback.classList.remove('show');
+            console.log('Baseball selection reset');
+        });
+
+        mmaResetBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            mmaInputs.forEach(input => {
+                input.value = '';
+            });
+            mmaBreakdownContainer.innerHTML = '';
+            mmaTotalScore.textContent = '0.0';
+            mmaResultSection.classList.remove('show');
+            mmaCopyFeedback.classList.remove('show');
+            console.log('MMA calculator reset');
+        });
+
+        tennisResetBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            tennisInputs.forEach(input => {
+                input.value = '';
+            });
+            tennisBreakdownContainer.innerHTML = '';
+            tennisTotalScore.textContent = '0.0';
+            tennisResultSection.classList.remove('show');
+            tennisCopyFeedback.classList.remove('show');
+            console.log('Tennis calculator reset');
+        });
+
+        footballResetBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            offensiveRadio.checked = false;
+            kickerRadio.checked = false;
+            footballOffensiveStats.classList.remove('show');
+            footballKickerStats.classList.remove('show');
+            footballOffensiveInputs.forEach(input => {
+                input.value = '';
+            });
+            footballKickerInputs.forEach(input => {
+                input.value = '';
+            });
+            footballOffensiveBreakdownContainer.innerHTML = '';
+            footballKickerBreakdownContainer.innerHTML = '';
+            footballOffensiveTotalScore.textContent = '0.0';
+            footballKickerTotalScore.textContent = '0.0';
+            footballOffensiveResultSection.classList.remove('show');
+            footballKickerResultSection.classList.remove('show');
+            footballOffensiveCopyFeedback.classList.remove('show');
+            footballKickerCopyFeedback.classList.remove('show');
+            console.log('Football selection reset');
+        });
+
+        actionBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            calculateTotal();
+            resultSection.classList.add('show');
+            copyResult();
+        });
+
+        hitterActionBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            calculateHitterTotal();
+            hitterResultSection.classList.add('show');
+            copyHitterResult();
+        });
+
+        pitcherActionBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            calculatePitcherTotal();
+            pitcherResultSection.classList.add('show');
+            copyPitcherResult();
+        });
+
+        mmaActionBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            calculateMMATotal();
+            mmaResultSection.classList.add('show');
+            copyMMAResult();
+        });
+
+        tennisActionBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            calculateTennisTotal();
+            tennisResultSection.classList.add('show');
+            copyTennisResult();
+        });
+
+        footballOffensiveActionBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            calculateFootballOffensiveTotal();
+            footballOffensiveResultSection.classList.add('show');
+            copyFootballOffensiveResult();
+        });
+
+        footballKickerActionBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            calculateFootballKickerTotal();
+            footballKickerResultSection.classList.add('show');
+            copyFootballKickerResult();
+        });
+
+        function calculateTotal() {
+            let total = 0;
+            let breakdownHTML = '';
+
+            statInputs.forEach(input => {
+                const value = parseFloat(input.value) || 0;
+                const multiplier = parseFloat(input.dataset.multiplier);
+                const name = input.dataset.name;
+                const calculation = value * multiplier;
+
+                if (value !== 0) {
+                    total += calculation;
+                    const isNegative = calculation < 0;
+                    breakdownHTML += `
+                        <div class="breakdown-item">
+                            <div>
+                                <div class="breakdown-label">${name}</div>
+                                <div class="breakdown-calc">${value} × ${multiplier}</div>
+                            </div>
+                            <div class="breakdown-value ${isNegative ? 'negative' : ''}">${calculation.toFixed(1)}</div>
+                        </div>
+                    `;
+                }
+            });
+
+            breakdownContainer.innerHTML = breakdownHTML;
+            totalScoreDisplay.textContent = total.toFixed(1);
+        }
+
+        function calculateHitterTotal() {
+            let total = 0;
+            let breakdownHTML = '';
+
+            hitterInputs.forEach(input => {
+                const value = parseFloat(input.value) || 0;
+                const multiplier = parseFloat(input.dataset.multiplier);
+                const name = input.dataset.name;
+                const calculation = value * multiplier;
+
+                if (value !== 0) {
+                    total += calculation;
+                    const isNegative = calculation < 0;
+                    breakdownHTML += `
+                        <div class="breakdown-item">
+                            <div>
+                                <div class="breakdown-label">${name}</div>
+                                <div class="breakdown-calc">${value} × ${multiplier}</div>
+                            </div>
+                            <div class="breakdown-value ${isNegative ? 'negative' : ''}">${calculation.toFixed(1)}</div>
+                        </div>
+                    `;
+                }
+            });
+
+            hitterBreakdownContainer.innerHTML = breakdownHTML;
+            hitterTotalScore.textContent = total.toFixed(1);
+        }
+
+        function calculatePitcherTotal() {
+            let total = 0;
+            let breakdownHTML = '';
+
+            pitcherInputs.forEach(input => {
+                const value = parseFloat(input.value) || 0;
+                const multiplier = parseFloat(input.dataset.multiplier);
+                const name = input.dataset.name;
+                const calculation = value * multiplier;
+
+                if (value !== 0) {
+                    total += calculation;
+                    const isNegative = calculation < 0;
+                    breakdownHTML += `
+                        <div class="breakdown-item">
+                            <div>
+                                <div class="breakdown-label">${name}</div>
+                                <div class="breakdown-calc">${value} × ${multiplier}</div>
+                            </div>
+                            <div class="breakdown-value ${isNegative ? 'negative' : ''}">${calculation.toFixed(1)}</div>
+                        </div>
+                    `;
+                }
+            });
+
+            pitcherBreakdownContainer.innerHTML = breakdownHTML;
+            pitcherTotalScore.textContent = total.toFixed(1);
+        }
+
+        function calculateMMATotal() {
+            let total = 0;
+            let breakdownHTML = '';
+
+            mmaInputs.forEach(input => {
+                const value = parseFloat(input.value) || 0;
+                const multiplier = parseFloat(input.dataset.multiplier);
+                const name = input.dataset.name;
+                const calculation = value * multiplier;
+
+                if (value !== 0) {
+                    total += calculation;
+                    const isNegative = calculation < 0;
+                    breakdownHTML += `
+                        <div class="breakdown-item">
+                            <div>
+                                <div class="breakdown-label">${name}</div>
+                                <div class="breakdown-calc">${value} × ${multiplier}</div>
+                            </div>
+                            <div class="breakdown-value ${isNegative ? 'negative' : ''}">${calculation.toFixed(1)}</div>
+                        </div>
+                    `;
+                }
+            });
+
+            mmaBreakdownContainer.innerHTML = breakdownHTML;
+            mmaTotalScore.textContent = total.toFixed(1);
+        }
+
+        function calculateTennisTotal() {
+            let total = 0;
+            let breakdownHTML = '';
+
+            tennisInputs.forEach(input => {
+                const value = parseFloat(input.value) || 0;
+                const multiplier = parseFloat(input.dataset.multiplier);
+                const name = input.dataset.name;
+                const calculation = value * multiplier;
+
+                if (value !== 0) {
+                    total += calculation;
+                    const isNegative = calculation < 0;
+                    breakdownHTML += `
+                        <div class="breakdown-item">
+                            <div>
+                                <div class="breakdown-label">${name}</div>
+                                <div class="breakdown-calc">${value} × ${multiplier}</div>
+                            </div>
+                            <div class="breakdown-value ${isNegative ? 'negative' : ''}">${calculation.toFixed(1)}</div>
+                        </div>
+                    `;
+                }
+            });
+
+            tennisBreakdownContainer.innerHTML = breakdownHTML;
+            tennisTotalScore.textContent = total.toFixed(1);
+        }
+
+        function calculateFootballOffensiveTotal() {
+            let total = 0;
+            let breakdownHTML = '';
+
+            footballOffensiveInputs.forEach(input => {
+                const value = parseFloat(input.value) || 0;
+                const multiplier = parseFloat(input.dataset.multiplier);
+                const name = input.dataset.name;
+                const calculation = value * multiplier;
+
+                if (value !== 0) {
+                    total += calculation;
+                    const isNegative = calculation < 0;
+                    breakdownHTML += `
+                        <div class="breakdown-item">
+                            <div>
+                                <div class="breakdown-label">${name}</div>
+                                <div class="breakdown-calc">${value} × ${multiplier}</div>
+                            </div>
+                            <div class="breakdown-value ${isNegative ? 'negative' : ''}">${calculation.toFixed(1)}</div>
+                        </div>
+                    `;
+                }
+            });
+
+            footballOffensiveBreakdownContainer.innerHTML = breakdownHTML;
+            footballOffensiveTotalScore.textContent = total.toFixed(1);
+        }
+
+        function calculateFootballKickerTotal() {
+            let total = 0;
+            let breakdownHTML = '';
+
+            footballKickerInputs.forEach(input => {
+                const value = parseFloat(input.value) || 0;
+                const multiplier = parseFloat(input.dataset.multiplier);
+                const name = input.dataset.name;
+                const calculation = value * multiplier;
+
+                if (value !== 0) {
+                    total += calculation;
+                    const isNegative = calculation < 0;
+                    breakdownHTML += `
+                        <div class="breakdown-item">
+                            <div>
+                                <div class="breakdown-label">${name}</div>
+                                <div class="breakdown-calc">${value} × ${multiplier}</div>
+                            </div>
+                            <div class="breakdown-value ${isNegative ? 'negative' : ''}">${calculation.toFixed(1)}</div>
+                        </div>
+                    `;
+                }
+            });
+
+            footballKickerBreakdownContainer.innerHTML = breakdownHTML;
+            footballKickerTotalScore.textContent = total.toFixed(1);
+        }
+
+        function copyResult() {
+            let breakdownText = 'Basketball Fantasy Score Breakdown:\n\n';
+            
+            statInputs.forEach(input => {
+                const value = parseFloat(input.value) || 0;
+                const multiplier = parseFloat(input.dataset.multiplier);
+                const name = input.dataset.name;
+                const calculation = value * multiplier;
+
+                if (value !== 0) {
+                    breakdownText += `${name}: ${value} × ${multiplier} = ${calculation.toFixed(1)}\n`;
+                }
+            });
+
+            breakdownText += `\nTotal Fantasy Score: ${totalScoreDisplay.textContent}`;
+
+            navigator.clipboard.writeText(breakdownText).then(() => {
+                copyFeedback.classList.add('show');
+                setTimeout(() => {
+                    copyFeedback.classList.remove('show');
+                }, 2000);
+            });
+        }
+
+        function copyHitterResult() {
+            let breakdownText = 'Baseball (Hitter) Fantasy Score Breakdown:\n\n';
+            
+            hitterInputs.forEach(input => {
+                const value = parseFloat(input.value) || 0;
+                const multiplier = parseFloat(input.dataset.multiplier);
+                const name = input.dataset.name;
+                const calculation = value * multiplier;
+
+                if (value !== 0) {
+                    breakdownText += `${name}: ${value} × ${multiplier} = ${calculation.toFixed(1)}\n`;
+                }
+            });
+
+            breakdownText += `\nTotal Fantasy Score: ${hitterTotalScore.textContent}`;
+
+            navigator.clipboard.writeText(breakdownText).then(() => {
+                hitterCopyFeedback.classList.add('show');
+                setTimeout(() => {
+                    hitterCopyFeedback.classList.remove('show');
+                }, 2000);
+            });
+        }
+
+        function copyPitcherResult() {
+            let breakdownText = 'Baseball (Pitcher) Fantasy Score Breakdown:\n\n';
+            
+            pitcherInputs.forEach(input => {
+                const value = parseFloat(input.value) || 0;
+                const multiplier = parseFloat(input.dataset.multiplier);
+                const name = input.dataset.name;
+                const calculation = value * multiplier;
+
+                if (value !== 0) {
+                    breakdownText += `${name}: ${value} × ${multiplier} = ${calculation.toFixed(1)}\n`;
+                }
+            });
+
+            breakdownText += `\nTotal Fantasy Score: ${pitcherTotalScore.textContent}`;
+
+            navigator.clipboard.writeText(breakdownText).then(() => {
+                pitcherCopyFeedback.classList.add('show');
+                setTimeout(() => {
+                    pitcherCopyFeedback.classList.remove('show');
+                }, 2000);
+            });
+        }
+
+        function copyMMAResult() {
+            let breakdownText = 'MMA Fantasy Score Breakdown:\n\n';
+            
+            mmaInputs.forEach(input => {
+                const value = parseFloat(input.value) || 0;
+                const multiplier = parseFloat(input.dataset.multiplier);
+                const name = input.dataset.name;
+                const calculation = value * multiplier;
+
+                if (value !== 0) {
+                    breakdownText += `${name}: ${value} × ${multiplier} = ${calculation.toFixed(1)}\n`;
+                }
+            });
+
+            breakdownText += `\nTotal Fantasy Score: ${mmaTotalScore.textContent}`;
+
+            navigator.clipboard.writeText(breakdownText).then(() => {
+                mmaCopyFeedback.classList.add('show');
+                setTimeout(() => {
+                    mmaCopyFeedback.classList.remove('show');
+                }, 2000);
+            });
+        }
+
+        function copyTennisResult() {
+            let breakdownText = 'Tennis Fantasy Score Breakdown:\n\n';
+            
+            tennisInputs.forEach(input => {
+                const value = parseFloat(input.value) || 0;
+                const multiplier = parseFloat(input.dataset.multiplier);
+                const name = input.dataset.name;
+                const calculation = value * multiplier;
+
+                if (value !== 0) {
+                    breakdownText += `${name}: ${value} × ${multiplier} = ${calculation.toFixed(1)}\n`;
+                }
+            });
+
+            breakdownText += `\nTotal Fantasy Score: ${tennisTotalScore.textContent}`;
+
+            navigator.clipboard.writeText(breakdownText).then(() => {
+                tennisCopyFeedback.classList.add('show');
+                setTimeout(() => {
+                    tennisCopyFeedback.classList.remove('show');
+                }, 2000);
+            });
+        }
+
+        function copyFootballOffensiveResult() {
+            let breakdownText = 'Football (Offensive Player) Fantasy Score Breakdown:\n\n';
+            
+            footballOffensiveInputs.forEach(input => {
+                const value = parseFloat(input.value) || 0;
+                const multiplier = parseFloat(input.dataset.multiplier);
+                const name = input.dataset.name;
+                const calculation = value * multiplier;
+
+                if (value !== 0) {
+                    breakdownText += `${name}: ${value} × ${multiplier} = ${calculation.toFixed(1)}\n`;
+                }
+            });
+
+            breakdownText += `\nTotal Fantasy Score: ${footballOffensiveTotalScore.textContent}`;
+
+            navigator.clipboard.writeText(breakdownText).then(() => {
+                footballOffensiveCopyFeedback.classList.add('show');
+                setTimeout(() => {
+                    footballOffensiveCopyFeedback.classList.remove('show');
+                }, 2000);
+            });
+        }
+
+        function copyFootballKickerResult() {
+            let breakdownText = 'Football (Kicker) Fantasy Score Breakdown:\n\n';
+            
+            footballKickerInputs.forEach(input => {
+                const value = parseFloat(input.value) || 0;
+                const multiplier = parseFloat(input.dataset.multiplier);
+                const name = input.dataset.name;
+                const calculation = value * multiplier;
+
+                if (value !== 0) {
+                    breakdownText += `${name}: ${value} × ${multiplier} = ${calculation.toFixed(1)}\n`;
+                }
+            });
+
+            breakdownText += `\nTotal Fantasy Score: ${footballKickerTotalScore.textContent}`;
+
+            navigator.clipboard.writeText(breakdownText).then(() => {
+                footballKickerCopyFeedback.classList.add('show');
+                setTimeout(() => {
+                    footballKickerCopyFeedback.classList.remove('show');
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>
